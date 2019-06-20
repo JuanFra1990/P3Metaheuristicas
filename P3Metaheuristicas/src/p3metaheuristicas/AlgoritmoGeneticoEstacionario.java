@@ -28,6 +28,23 @@ public class AlgoritmoGeneticoEstacionario {
         return evolucionCoste;
     }
     
+      /**
+     * @param hA Valor que queremos darle a herramientasAux
+     * @description Funcion que permite darle valor a herramientasAux
+     */
+    public void setHerramientasAuxiliares(HerramientasAuxiliares hA){
+        herramientasAux = hA;
+    }
+    
+     /**
+     * @param NuevaPoblacion Valor que queremos darle a poblacion
+     * @description Funcion que permite darle valor a poblacion
+     */
+    public void setPoblacion(ArrayList<ArrayList<Integer>> NuevaPoblacion){
+        poblacion = NuevaPoblacion;
+    }
+    
+    
     /**
      * @description Función para mostrar los datos de la población que estamos estudiando
      * y cual es el primero mejor y el primero y segundo peores

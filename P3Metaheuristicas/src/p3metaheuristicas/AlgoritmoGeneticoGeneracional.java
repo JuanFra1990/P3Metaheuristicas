@@ -10,6 +10,7 @@ import java.util.Random;
 import static p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo.AMG_10;
 import static p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo.AMG_3;
 import static p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo.AMG_ALL;
+import p3metaheuristicas.BusquedaLocal.tipoDato;
 
 
 public class AlgoritmoGeneticoGeneracional {
@@ -26,6 +27,16 @@ public class AlgoritmoGeneticoGeneracional {
     Integer posicionPrimeroMejor;
     ArrayList<Integer> mejor;
     HerramientasAuxiliares herramientasAux;
+    
+      /**
+     * @param hA Valor que queremos darle a herramientasAux
+     * @description Funcion que permite darle valor a herramientasAux
+     */
+    public void setHerramientasAuxiliares(HerramientasAuxiliares hA){
+        herramientasAux = hA;
+    }
+    
+    
     
     /**
      * @description Funcion para devolver la evolucion de los costes
@@ -94,7 +105,7 @@ public class AlgoritmoGeneticoGeneracional {
     }
     
     @SuppressWarnings("empty-statement")
-    public void evolucion (boolean tipoCruce, algoritmo al){
+    public void evolucion (boolean tipoCruce, algoritmo al, tipoDato tD){
         evolucionCoste.clear();
         Integer tamano = herramientasAux.getTamano();
         Integer numeroCromosomas = herramientasAux.getNumeroCromosomasG();

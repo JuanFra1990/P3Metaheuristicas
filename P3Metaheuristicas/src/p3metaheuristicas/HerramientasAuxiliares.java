@@ -21,6 +21,14 @@ public class HerramientasAuxiliares {
     Integer evaluaciones;
     Integer generaciones;
     
+      /**
+     * @description Esta función permite almacenar el valor del tamano.
+     */
+    
+    public void setTamano(Integer Ntamano) {
+        tamano = Ntamano;
+    }
+    
     /**
      * @description Esta función permite devolver el tamaño de las matrices.
      * @return tamano devuelve un Integer con el tamaño de las matrices de nuestro problema
@@ -28,6 +36,33 @@ public class HerramientasAuxiliares {
     
     public Integer getTamano() {
         return tamano;
+    }
+    
+     /**
+     * @param NmatrizFlujos nueva matriz de flujos para cambiar valor
+     * @description Esta función permite almacenar el valor de la matrizFlujos.
+     */
+    
+    public void setMatrizFlujos(ArrayList<ArrayList<Integer>> NmatrizFlujos) {
+        matrizFlujos = NmatrizFlujos;
+    }
+    
+    /**
+     * @param NmatrizDistancias nueva matriz de distancias para cambiar valor
+     * @description Esta función permite almacenar el valor de la matrizFlujos.
+     */
+    
+    public void setMatrizDistancias(ArrayList<ArrayList<Integer>> NmatrizDistancias) {
+        matrizDistancias = NmatrizDistancias;
+    }
+    
+     /**
+     * @param numCromosomas Valor que queremos darle a numeroCromosomasE
+     * @description Esta función permite modificar el valor de numeroCromosomasE.
+     */
+    
+    public void setNumeroCromosomasE(Integer numCromosomas) {
+        numeroCromosomasE = numCromosomas;
     }
     
     /**
@@ -38,12 +73,30 @@ public class HerramientasAuxiliares {
         return numeroCromosomasE;
     }
     
+     /**
+     * @param numCromosomas Valor que queremos darle a numeroCromosomas
+     * @description Esta función permite modificar el valor de numeroCromosomas.
+     */
+    
+    public void setNumeroCromosomasG(Integer numCromosomas) {
+        numeroCromosomasG = numCromosomas;
+    }
+    
     /**
      * @description Esta función nos permite devolver el número de cromosomas
      * @return numeroCromosomas devuelve un Integer con el número de cromosomas que tenemos
      */
     public Integer getNumeroCromosomasG(){
         return numeroCromosomasG;
+    }
+    
+    
+    /**
+     * @param _probabilidadCruce valor que queremos dar a la variable probabilidadCruce
+     * @description Esta función nos facilita cambiar el valor de la probabilidad de Cruce
+     */
+    public void setProbabilidadCruce(Float _probabilidadCruce){
+        probabilidadCruce = _probabilidadCruce;
     }
     
     /**
@@ -54,12 +107,30 @@ public class HerramientasAuxiliares {
         return probabilidadCruce;
     }
     
+     /**
+     * @param _probabilidadMutacion valor que queremos dar a la variable probabilidadMutacion
+     * @description Esta función nos facilita cambiar el valor de la probabilidad de Mutacion
+     */
+    public void setProbabilidadMutacion(Float _probabilidadMutacion){
+        probabilidadMutacion = _probabilidadMutacion;
+    }
+    
+    
     /**
      * @description Esta función nos facilita la probabilidad de mutación que tenemos
      * @return probabilidadMutacion un Float para representar la probabilidad de mutación
      */
     public Float getProbabilidadMutacion(){
         return probabilidadMutacion;
+    }
+    
+          /**
+     * @param _evaluaciones valor que queremos dar a la variable evaluaciones
+     * @description Esta función permite cambiar el valor de la variable evaluaciones.
+     */
+    
+    public void setEvaluaciones(Integer _evaluaciones) {
+        evaluaciones = _evaluaciones;
     }
     
     /**
