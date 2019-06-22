@@ -6,15 +6,16 @@
 package p3metaheuristicas;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 
 public class Cruce {
     private Integer tamano;
-    ArrayList<Integer> padreUno;
-    ArrayList<Integer> padreDos;
-    ArrayList<Integer> hijoUno;
-    ArrayList<Integer> hijoDos;
+    ArrayList<Integer> padreUno = new ArrayList<>();
+    ArrayList<Integer> padreDos = new ArrayList<>();
+    ArrayList<Integer> hijoUno = new ArrayList<>();
+    ArrayList<Integer> hijoDos = new ArrayList<>();
     
     /**
      * @description Constructor de la clase Cruce
@@ -81,8 +82,8 @@ public class Cruce {
         
         for(int i=0; i<tamano; i++){
             if(i<rangoUno && i<=rangoDos){
-                hijoUno.add(hijoUno.get(i), padreUno.get(i));
-                hijoDos.add(hijoDos.get(i), padreDos.get(i));
+                hijoUno.add(padreUno.get(i));
+                hijoDos.add(padreDos.get(i));
                 
             }
         }
@@ -99,12 +100,12 @@ public class Cruce {
             boolean estaDos=busca(padreDos,padreUno.get(i%tamano),rangoUno,rangoDos,posicion);
             
             if(estaUno == false){
-                hijoUno.add(hijoUno.get(contador1%tamano), padreDos.get(i%tamano));
+                hijoUno.add(padreDos.get(i%tamano));
                 contador1++;
             }
             
             if(estaDos == false){
-                hijoDos.add(hijoDos.get(contador2%tamano), padreUno.get(i%tamano));
+                hijoDos.add(padreUno.get(i%tamano));
                 contador2++;
             }
             i++;
@@ -123,7 +124,7 @@ public class Cruce {
      */
     public boolean busca(ArrayList<Integer> lista, Integer elemento, Integer rango1, Integer rango2, Integer pos){
         for (int i=rango1; i<=rango2; i++){
-            if(elemento == lista.get(i)){
+            if(Objects.equals(elemento, lista.get(i))){
                 pos=i;
                 return true;
             }

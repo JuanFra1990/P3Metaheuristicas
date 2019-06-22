@@ -189,6 +189,7 @@ public class HerramientasAuxiliares {
         for (Integer i = 0; i < tamano; i++) {
             for (Integer j = 0; j < tamano; j++) {
                 if (!Objects.equals(i, j))
+                    System.out.println(matrizDistancias.get(Solucion.get(i)));
                     coste += matrizFlujos.get(i).get(j) * matrizDistancias.get(Solucion.get(i)).get(Solucion.get(j));
             }
         }

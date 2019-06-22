@@ -20,12 +20,12 @@ public class AlgoritmoGeneticoGeneracional {
         AMG_3
     };
     
-    ArrayList<ArrayList<Integer>> poblacion;
-    ArrayList<ArrayList<Integer>> poblacionNueva;
-    ArrayList<Integer> evolucionCoste;
-    ArrayList<Integer> costePoblacion;
+    ArrayList<ArrayList<Integer>> poblacion = new ArrayList<>();
+    ArrayList<ArrayList<Integer>> poblacionNueva = new ArrayList<>();
+    ArrayList<Integer> evolucionCoste = new ArrayList<>();
+    ArrayList<Integer> costePoblacion = new ArrayList<>();
     Integer posicionPrimeroMejor;
-    ArrayList<Integer> mejor;
+    ArrayList<Integer> mejor = new ArrayList<>();
     HerramientasAuxiliares herramientasAux;
     
       /**
@@ -109,11 +109,20 @@ public class AlgoritmoGeneticoGeneracional {
         evolucionCoste.clear();
         Integer tamano = herramientasAux.getTamano();
         Integer numeroCromosomas = herramientasAux.getNumeroCromosomasG();
+        ArrayList<Integer> pob = new ArrayList<>(tamano);
+         
+        for (int i = 0; i<numeroCromosomas; i++) {
+            poblacion.add(pob);
+        }
         
 
         for (int i = 0; i < numeroCromosomas; i++) {
             herramientasAux.cargarVector(poblacion.get(i));
-            costePoblacion.set(i, herramientasAux.costeTotal(poblacion.get(i)));
+            if (costePoblacion.size()-1 > i) {
+                costePoblacion.set(i, herramientasAux.costeTotal(poblacion.get(i)));
+            } else {
+                costePoblacion.add(herramientasAux.costeTotal(poblacion.get(i)));
+            }
             if (i == 0) {
                 posicionPrimeroMejor = i;
             } else {
@@ -138,15 +147,29 @@ public class AlgoritmoGeneticoGeneracional {
             //Torneo;
             posicionPrimeroMejor = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
-                Integer posicion2;
+                Integer posicion2 = 0;
 
-                while (i == (posicion2 = (int) (Math.random() * numeroCromosomas -1) + 1));
+               while (i==posicion2){
+                        posicion2 =  (int) (Math.random() * numeroCromosomas);
+                }
+                if (posicion2 == numeroCromosomas) {
+                    posicion2--;
+                }
                 if (costePoblacion.get(i) < costePoblacion.get(posicion2)) {
                     poblacionNueva.set(i, poblacion.get(i));
                     costes.set(i, (float)costePoblacion.get(i));
                 } else {
-                    poblacionNueva.set(i, poblacion.get(posicion2));
-                    costes.set(i, (float)costePoblacion.get(posicion2));
+                    if (poblacionNueva.size()-1 > i){
+                        poblacionNueva.set(i, poblacion.get(posicion2));
+                    } else {
+                        poblacionNueva.add(poblacion.get(posicion2));
+                    }
+                    if (costes.size()-1 > i) {
+                        costes.set(i, (float)costePoblacion.get(posicion2));
+                    } else {
+                        costes.add((float)costePoblacion.get(posicion2));
+                    }
+                    
                 }
 
                 if (costes.get(i) < costes.get(posicionPrimeroMejor)) {
@@ -154,27 +177,33 @@ public class AlgoritmoGeneticoGeneracional {
                 }
             }
 
-            Float costeMejor;// guardamos el mejor coste por si se reempleza tenerlo a mano
-            // y así no tener que calcularlo de nuevo
-            // copiamos el coste del mejor del torneo y copio el vector;
+            Float costeMejor;
             costeMejor = costes.get(posicionPrimeroMejor);
             mejor = poblacionNueva.get(posicionPrimeroMejor);
 
             ArrayList<Boolean> flagsPadres = new ArrayList<>(numeroCromosomas); 
+            for (int i = 0; i < numeroCromosomas; i++){
+                flagsPadres.add(false);
+            }
             Double p;
-            Integer elemento;
+            Integer elemento = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
                 Random r = new Random();
                 p = r.nextFloat() * (1.0 - 0.0) + 0.0;
                 if (p < probabilidadCruce) {
-                    while (i == (elemento = (r.nextInt() * numeroCromosomas -1)));
+                    while (i==elemento){
+                            elemento =  (int) (Math.random() * numeroCromosomas);
+                    }
+                    if (elemento == numeroCromosomas) {
+                        elemento--;
+                    }
                     if (tipoCruce == true) {
                         cruce.OX(poblacionNueva.get(i), poblacionNueva.get(elemento));
                     } else {
                         cruce.PMX(poblacionNueva.get(i), poblacionNueva.get(elemento));
                     }
-                    flagsPadres.set(i, true);
-                    flagsPadres.set(elemento, true);
+                    flagsPadres.add(i, true);
+                    flagsPadres.add(elemento, true);
                     poblacionNueva.set(i, cruce.hijoUno());
                     poblacionNueva.set(i, cruce.hijoDos());
                 }
@@ -286,7 +315,8 @@ public class AlgoritmoGeneticoGeneracional {
                 if(marcaje.get(i) == true){
                     p = RandomEnRangoDouble(0.0, 1.0);
                     if(p<pMutacion){
-                        while(j == (genetico=RandomEnRango(0, tamano-1))){
+                        while(j == (genetico=RandomEnRango(0, poblacionNueva.get(i).size()-1))){
+                            System.out.println(poblacionNueva.get(i).size());
                             swap(poblacionNueva.get(i).get(j),poblacionNueva.get(i).get(genetico));
                         }
                     }

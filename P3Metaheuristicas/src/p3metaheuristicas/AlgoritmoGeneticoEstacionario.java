@@ -11,9 +11,9 @@ import p3metaheuristicas.BusquedaLocal.tipoDato;
 
 
 public class AlgoritmoGeneticoEstacionario {
-    ArrayList<ArrayList<Integer>> poblacion;
-    ArrayList<Integer> costePoblacion;
-    ArrayList<Integer> evolucionCoste;
+    ArrayList<ArrayList<Integer>> poblacion = new ArrayList<>();
+    ArrayList<Integer> costePoblacion = new ArrayList<>();
+    ArrayList<Integer> evolucionCoste = new ArrayList<>();
     Integer posicionPrimeroMejor;
     Integer posicionSegundoMejor;
     Integer posicionPrimeroPeor;
@@ -119,12 +119,17 @@ public class AlgoritmoGeneticoEstacionario {
         Integer costeHUno, costeHDos;
         Integer contador = 0;
         Integer repite = 0;
+        ArrayList<Integer> pob = new ArrayList<>(tamano);
+         posicionSegundoPeor = 0;
         
+         for (int i = 0; i<numeroCromosomas; i++) {
+            poblacion.add(pob);
+        }
         
         costePoblacion.add(numeroCromosomas);
         for (int i=0; i < numeroCromosomas; i++){
             herramientasAux.cargarVector(poblacion.get(i));
-            costePoblacion.add(costePoblacion.get(i),herramientasAux.costeTotal(poblacion.get(i)));
+            costePoblacion.add(i,herramientasAux.costeTotal(poblacion.get(i)));
             if (i == 0){
                 posicionPrimeroMejor = i;
                 posicionPrimeroPeor = i;
@@ -146,7 +151,7 @@ public class AlgoritmoGeneticoEstacionario {
         Integer p1, p2, p3, p4;
         Cruce cruce = new Cruce(tamano);
         
-        while(contador < generaciones){
+        while(contador < herramientasAux.getEvaluaciones()){
             contador++;
             p1=RandomEnRango(0, numeroCromosomas-1);
             p2=RandomEnRango(0, numeroCromosomas-1);

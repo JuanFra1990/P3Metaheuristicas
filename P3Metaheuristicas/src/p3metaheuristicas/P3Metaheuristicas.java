@@ -39,7 +39,7 @@ public class P3Metaheuristicas {
        String opcion = "0";
        long startTime;
        long endTime;
-       while (opcion.equals("11")) {
+       while (!opcion.equals("11")) {
            System.out.println("---------------Menú Practica 2 -------------------------");
            System.out.println("--- 1. Carga de datos ----------------------------------");
            System.out.println("--- 2. Seleccion de semilla ----------------------------");
