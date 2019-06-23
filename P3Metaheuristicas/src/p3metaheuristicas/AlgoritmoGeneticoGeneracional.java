@@ -136,16 +136,12 @@ public class AlgoritmoGeneticoGeneracional {
         Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion() * tamano; 
         
         ArrayList<Float> costes = new ArrayList<>(numeroCromosomas); // donde se iran guardando los costes de los ganadores del los torneos
-        for (int i = 0; i < numeroCromosomas; i++){
-            costes.add((float)0);
-        }
         Cruce cruce = new Cruce(numeroCromosomas);
-        Integer generaciones = 1000;
-        Integer contador = 0;
+        Integer evaluaciones = 100;
+        Integer totalevaluaciones = herramientasAux.getEvaluaciones();
         Integer repeticiones = 0;
-
-    
-        while (contador < generaciones) {
+        
+        while(evaluaciones<totalevaluaciones){
 
              posicionPrimeroMejor = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
@@ -273,15 +269,23 @@ public class AlgoritmoGeneticoGeneracional {
                     posicionMejor = i;
                 }
             }
-            
-            posicionPrimeroMejor = posicionMejor;
+                       
+             posicionPrimeroMejor=posicionMejor;
             mejor = poblacionNueva.get(posicionMejor);
             costeMejor = costes.get(posicionMejor);
+            
+            if(evolucionCoste.size() == 9){
+                int i = 234;
+            }
+       
+            
+        
+            poblacion=poblacionNueva;
+            
+            for(int i=0; i<costes.size(); i++){
+                costePoblacion.add(costes.get(i).intValue());
+            }
 
-            poblacion = poblacionNueva;
-            costes.forEach((n) -> costePoblacion.add(Math.round(n))); 
-            contador++;
-            repeticiones++;
             evolucionCoste.add(costePoblacion.get(posicionPrimeroMejor));
         }
     }

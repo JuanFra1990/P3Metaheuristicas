@@ -187,15 +187,9 @@ public class HerramientasAuxiliares {
      */
     
     public Integer costeTotal(ArrayList<Integer> Solucion, algoritmo al) {
-        Integer numeroCromosomas = 0;
-        if (al == null){
-            numeroCromosomas = numeroCromosomasE;
-        } else {
-            numeroCromosomas = numeroCromosomasG;
-        }
         int coste = 0;
-        for (int i = 0; i < numeroCromosomas; i++) {
-            for (int j = 0; j < numeroCromosomas; j++) {
+        for (int i = 0; i < tamano; i++) {
+            for (int j = 0; j < tamano; j++) {
                 if (i != j)
                     coste += matrizFlujos.get(i).get(j) * matrizDistancias.get(Solucion.get(i)).get(Solucion.get(j));
             }
