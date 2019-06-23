@@ -8,6 +8,7 @@ package p3metaheuristicas;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo;
 
 
 public class HerramientasAuxiliares {
@@ -178,18 +179,24 @@ public class HerramientasAuxiliares {
         System.out.println();
     }
     
-        /**
-     * @param solucion Array de Integer que contiene la solución
+    /**
+     * @param Solucion Array de Integer que contiene la solución
+     * @param al variable de control para conocer que algoritmo se esta usando y que tamaño debemos usar en el bucle
      * @description Esta función permite realizar el calculo del coste de creación de dicha solución.
      * @return coste devuelve un Integer con el coste de la solución
      */
     
-    public Integer costeTotal(ArrayList<Integer> Solucion) {
-        Integer coste = 0;
-        for (Integer i = 0; i < tamano; i++) {
-            for (Integer j = 0; j < tamano; j++) {
-                if (!Objects.equals(i, j))
-                    System.out.println(matrizDistancias.get(Solucion.get(i)));
+    public Integer costeTotal(ArrayList<Integer> Solucion, algoritmo al) {
+        Integer numeroCromosomas = 0;
+        if (al == null){
+            numeroCromosomas = numeroCromosomasE;
+        } else {
+            numeroCromosomas = numeroCromosomasG;
+        }
+        int coste = 0;
+        for (int i = 0; i < numeroCromosomas; i++) {
+            for (int j = 0; j < numeroCromosomas; j++) {
+                if (i != j)
                     coste += matrizFlujos.get(i).get(j) * matrizDistancias.get(Solucion.get(i)).get(Solucion.get(j));
             }
         }
@@ -201,11 +208,18 @@ public class HerramientasAuxiliares {
      * @param posicionA Integer que contiene una posición de la matriz
      * @param posicionB Integer que contiene una posición de la matriz
      * @param coste Integer que almacena el coste de la solucion de nuestro problema
+     * @param al Variable para controlar el algoritmo en que nos encontramos y que tamaño utilizar en nuestro bucle
      * @description Esta función recorre el contenido de las matrices de distancia y flujo y junto a la solución permite hallar el coste.
      * @return coste devuelve un Integer con el coste de la solución actual
      */
-    public Integer costeFactorial(ArrayList<Integer> Solucion, Integer posicionA, Integer posicionB, Integer coste) {
-        for (Integer i = 0; i < tamano; i++) {
+    public Integer costeFactorial(ArrayList<Integer> Solucion, Integer posicionA, Integer posicionB, Integer coste, algoritmo al) {
+        Integer numeroCromosomas = 0;
+        if (al == null){
+            numeroCromosomas = numeroCromosomasE;
+        } else {
+            numeroCromosomas = numeroCromosomasG;
+        }
+        for (Integer i = 0; i < numeroCromosomas; i++) {
             if (i != posicionA && i != posicionB) {
                 coste += matrizFlujos.get(posicionA).get(i)*(matrizDistancias.get(Solucion.get(posicionB)).get(Solucion.get(i)) 
                         - matrizDistancias.get(Solucion.get(posicionA)).get(Solucion.get(i)) 

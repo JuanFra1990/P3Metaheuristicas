@@ -119,9 +119,9 @@ public class AlgoritmoGeneticoGeneracional {
         for (int i = 0; i < numeroCromosomas; i++) {
             herramientasAux.cargarVector(poblacion.get(i));
             if (costePoblacion.size()-1 > i) {
-                costePoblacion.set(i, herramientasAux.costeTotal(poblacion.get(i)));
+                costePoblacion.set(i, herramientasAux.costeTotal(poblacion.get(i), al));
             } else {
-                costePoblacion.add(herramientasAux.costeTotal(poblacion.get(i)));
+                costePoblacion.add(herramientasAux.costeTotal(poblacion.get(i), al));
             }
             if (i == 0) {
                 posicionPrimeroMejor = i;
@@ -136,6 +136,9 @@ public class AlgoritmoGeneticoGeneracional {
         Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion() * tamano; 
         
         ArrayList<Float> costes = new ArrayList<>(numeroCromosomas); // donde se iran guardando los costes de los ganadores del los torneos
+        for (int i = 0; i < numeroCromosomas; i++){
+            costes.add((float)0);
+        }
         Cruce cruce = new Cruce(numeroCromosomas);
         Integer generaciones = 1000;
         Integer contador = 0;
@@ -144,37 +147,27 @@ public class AlgoritmoGeneticoGeneracional {
     
         while (contador < generaciones) {
 
-            //Torneo;
-            posicionPrimeroMejor = 0;
+             posicionPrimeroMejor = 0;
             for (int i = 0; i < numeroCromosomas; i++) {
-                Integer posicion2 = 0;
-
-               while (i==posicion2){
-                        posicion2 =  (int) (Math.random() * numeroCromosomas);
-                }
-                if (posicion2 == numeroCromosomas) {
+                int posicion2 = 0;
+                poblacionNueva.add(new ArrayList<>(numeroCromosomas));
+                while (i==posicion2){
+                    posicion2 =  (int) (Math.random() * numeroCromosomas);
+               }
+               if (posicion2 == numeroCromosomas) {
                     posicion2--;
                 }
-                if (costePoblacion.get(i) < costePoblacion.get(posicion2)) {
+                if (costePoblacion.get(i) < costePoblacion.get(Math.round(posicion2))) {
                     poblacionNueva.set(i, poblacion.get(i));
-                    costes.set(i, (float)costePoblacion.get(i));
+                    costes.add(i, (float)costePoblacion.get(i));
                 } else {
-                    if (poblacionNueva.size()-1 > i){
-                        poblacionNueva.set(i, poblacion.get(posicion2));
-                    } else {
-                        poblacionNueva.add(poblacion.get(posicion2));
-                    }
-                    if (costes.size()-1 > i) {
-                        costes.set(i, (float)costePoblacion.get(posicion2));
-                    } else {
-                        costes.add((float)costePoblacion.get(posicion2));
-                    }
-                    
+                    poblacionNueva.set(i, poblacion.get(Math.round(posicion2)));
+                    costes.add(i, (float)costePoblacion.get(Math.round(posicion2)));
                 }
-
                 if (costes.get(i) < costes.get(posicionPrimeroMejor)) {
                     posicionPrimeroMejor = i;
                 }
+                
             }
 
             Float costeMejor;
@@ -209,15 +202,16 @@ public class AlgoritmoGeneticoGeneracional {
                 }
             }
 
-            funcionMutacion(flagsPadres, (int) Math.round(probabilidadMutacion));
+           funcionMutacion(flagsPadres, (int) Math.round(probabilidadMutacion));
+            
             Boolean elitismo = false; 
             
-            for (int i = 0; i < numeroCromosomas; i++) {
+            for (int i = 0; i < numeroCromosomas-1; i++) {
                 if (flagsPadres.get(i) == true) {
                     if (i == posicionPrimeroMejor) {
                         elitismo = true;
                     }
-                    costes.set(i, (float)herramientasAux.costeTotal(poblacionNueva.get(i)));
+                    costes.set(i, (float)herramientasAux.costeTotal(poblacionNueva.get(i), al));
                     //evaluaciones++;if(evaluaciones==totalevaluaciones)break;
                 }
             }
@@ -240,7 +234,7 @@ public class AlgoritmoGeneticoGeneracional {
                         BusquedaLocal busquedaLocal = new BusquedaLocal(herramientasAux,poblacionNueva.get(i));
 //                        busquedaLocal.setHerramientas(herramientasAux);
 //                        busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
-                        costes.set(i, (float)busquedaLocal.AlgoritmoBusquedaLocal());
+                        costes.set(i, (float)busquedaLocal.AlgoritmoBusquedaLocal(al));
                         poblacionNueva.set(i, busquedaLocal.getSolucionFinal());
                     }
                 }
@@ -252,34 +246,22 @@ public class AlgoritmoGeneticoGeneracional {
                             BusquedaLocal busquedaLocal = new BusquedaLocal(herramientasAux,poblacionNueva.get(i));
 //                            busquedaLocal.setHerramientas(herramientasAux);
 //                            busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
-                            costes.set(i,(float)busquedaLocal.AlgoritmoBusquedaLocal());
+                            costes.set(i,(float)busquedaLocal.AlgoritmoBusquedaLocal(al));
                             poblacionNueva.set(i, busquedaLocal.getSolucionFinal());
                         }
                     }
                 }
                 if (al.equals(AMG_3)) {
-                    Float auxiliar = Float.MAX_VALUE;
-                    ArrayList<Integer> pos = new ArrayList<>(3);
-                    ArrayList<Float> calculoCostes = new ArrayList<>();
-                    calculoCostes.addAll(costes);
-                    for (int i = 0; i < 3; i++) {
-                        auxiliar = Float.MAX_VALUE;
-                        for (int j = 0; j < numeroCromosomas; j++) {
-                            if (calculoCostes.get(j) < auxiliar) {
-                                auxiliar = calculoCostes.get(j);
-                                pos.set(i, j);
-                            }
+                  for (int i = 0; i < numeroCromosomas; i++) {
+                        Random r = new Random();
+                        float f =  (float) (r.nextFloat() * (1.0 - 0.0) + 0.0);
+                        if (f < 0.1) {
+                            BusquedaLocal busquedaLocal = new BusquedaLocal(herramientasAux,poblacionNueva.get(i));
+//                            busquedaLocal.setHerramientas(herramientasAux);
+//                            busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
+                            costes.set(i,(float)busquedaLocal.AlgoritmoBusquedaLocal(al));
+                            poblacionNueva.set(i, busquedaLocal.getSolucionFinal());
                         }
-                        calculoCostes.set(pos.get(i), Float.MAX_VALUE);
-
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        BusquedaLocal busquedaLocal = new BusquedaLocal(herramientasAux, poblacionNueva.get(pos.get(i)));
-                        // busquedaLocal.setHerramientas(herramientasAux);
-                        // busquedaLocal.setSolucionAnterior(poblacionNueva.get(pos.get(i)));
-                        
-                        costes.set(pos.get(i), (float)busquedaLocal.AlgoritmoBusquedaLocal());
-                        poblacionNueva.set(pos.get(i), busquedaLocal.getSolucionFinal());
                     }
                 }
                 repeticiones = 0;
@@ -316,7 +298,7 @@ public class AlgoritmoGeneticoGeneracional {
                     p = RandomEnRangoDouble(0.0, 1.0);
                     if(p<pMutacion){
                         while(j == (genetico=RandomEnRango(0, poblacionNueva.get(i).size()-1))){
-                            System.out.println(poblacionNueva.get(i).size());
+                            //System.out.println(poblacionNueva.get(i).size());
                             swap(poblacionNueva.get(i).get(j),poblacionNueva.get(i).get(genetico));
                         }
                     }

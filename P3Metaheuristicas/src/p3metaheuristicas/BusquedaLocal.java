@@ -7,6 +7,7 @@ package p3metaheuristicas;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo;
 import static p3metaheuristicas.BusquedaLocal.tipoDato.CIEN;
 
 public class BusquedaLocal {
@@ -78,11 +79,14 @@ public class BusquedaLocal {
      * recorrer cada Array y comparar tanto la distancia minima como el flujo maximo, de superar los umbrales marcados se actualiza el valor y
      * la posicion del Array y se almacena en nuestros vectoresIndice, que más tarde la unión de estos saldra nuestro vectorSolucion.
      */
-    public Integer AlgoritmoBusquedaLocal(){
+    public Integer AlgoritmoBusquedaLocal(algoritmo al){
         
-        Integer coste = herramientas.costeTotal(solucionAnterior);
+         Integer coste = herramientas.costeTotal(solucionAnterior, al);
         Integer tamanoSolAnterior = solucionAnterior.size();
         ArrayList<Integer> dlb = new ArrayList<>(tamanoSolAnterior);
+        for (int i = 0; i<tamanoSolAnterior; i++){
+            dlb.add(0);
+        }
         Integer contador = 0;
         boolean mejora = true;
         boolean parada = false;
@@ -95,8 +99,7 @@ public class BusquedaLocal {
                 if (dlb.get(i) == 0) {
                     parada = false;
                     for (int j = 0; j < tamanoSolAnterior && !mejora; j++) {
-
-                        Integer CosteFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste);
+                        Integer CosteFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste, al);
                         if (CosteFactorial < coste) {
                             coste = CosteFactorial;
                             // Usamos Swap si vemos que no funciona bien deberiamos usar la funcion Intercambia posiciones de arriba
@@ -118,9 +121,9 @@ public class BusquedaLocal {
     }
     
     
-    public Integer algoritmoBusquedaLocalUno(tipoDato a){
+    public Integer algoritmoBusquedaLocalUno(tipoDato a, algoritmo al){
         Integer tamanoSolAnterior = solucionAnterior.size();
-        Integer coste = herramientas.costeTotal(solucionAnterior);
+        Integer coste = herramientas.costeTotal(solucionAnterior, al);
         ArrayList<Integer> dlb = new ArrayList<Integer> (tamanoSolAnterior);
         Integer contador = 0;
         boolean mejora = true;
@@ -141,7 +144,7 @@ public class BusquedaLocal {
                 if(dlb.get(i) == 0){
                     parada = false;
                     for(int j=0; j<tamanoSolAnterior && !mejora; j++){
-                        Integer costeFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste);
+                        Integer costeFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste, al);
                         if(costeFactorial < coste){
                             coste = costeFactorial;
                             intercambioPosiciones(solucionAnterior, i, j);

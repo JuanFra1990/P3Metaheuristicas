@@ -7,6 +7,7 @@ package p3metaheuristicas;
 
 import java.util.ArrayList;
 import java.util.Random;
+import p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo;
 
 /**
  *
@@ -75,8 +76,8 @@ public class EnfriamientoSimulado {
      * de búsqueda por entornos con un criterio probabilístico 
      * de aceptación de soluciones basados en la Termodinámica
      */
-    public Integer EnfriamientoSimulado(boolean tipoTemperatura){
-        Integer coste = herramientas.costeTotal(solucionActual);
+    public Integer EnfriamientoSimulado(boolean tipoTemperatura, algoritmo al){
+        Integer coste = herramientas.costeTotal(solucionActual, al);
         Integer mejorCoste = coste;
         Integer tamanoSolActual = solucionActual.size();
         solucionESimulado = solucionActual;
@@ -103,7 +104,7 @@ public class EnfriamientoSimulado {
                     boolean parada = false;
                     for (j=0;j<tamanoSolActual && !mejora; j++){
                         if(i!=j){
-                            Integer costeFactorial = herramientas.costeFactorial(solucionActual, i, j, coste);
+                            Integer costeFactorial = herramientas.costeFactorial(solucionActual, i, j, coste, al);
                             Integer diferencia = costeFactorial - coste;
                             Double enfriamiento = (-diferencia/temperatura);
                             if((diferencia<0) || (rand <= Math.exp(enfriamiento))){

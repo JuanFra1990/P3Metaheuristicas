@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Scanner;
 import p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo;
 
 import p3metaheuristicas.BusquedaLocal.tipoDato;
@@ -54,10 +55,10 @@ public class P3Metaheuristicas {
            System.out.println("--- 11. Finalizar Programa -----------------------------");
            System.out.println("--------------------------------------------------------");
            System.out.println("Introduce opción: ");
-           Reader entrada=new InputStreamReader(System.in);
-           opcion=  Character.toString((char) entrada.read());
-
            
+           Scanner scanner = new Scanner(System. in);
+           opcion = scanner. nextLine();
+           System.out.println("Opcion elegida: "+ opcion);
             switch (opcion){
                 case "1":
                    System.out.println("Has seleccionado la opción de cargar datos");
@@ -227,6 +228,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMG3.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresAMG3.setTamano(tamano);
                     herramientasAuxiliaresAMG3.setNumeroCromosomasG(2);
+                    herramientasAuxiliaresAMG3.setNumeroCromosomasE(2);
                     herramientasAuxiliaresAMG3.setEvaluaciones(1);
                     herramientasAuxiliaresAMG3.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMG3.setProbabilidadMutacion(Float.MAX_VALUE);
@@ -281,6 +283,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMG3Q.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresAMG3Q.setTamano(tamano);
                     herramientasAuxiliaresAMG3Q.setNumeroCromosomasG(2);
+                    herramientasAuxiliaresAMG3Q.setNumeroCromosomasE(2);
                     herramientasAuxiliaresAMG3Q.setEvaluaciones(1);
                     herramientasAuxiliaresAMG3Q.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMG3Q.setProbabilidadMutacion(Float.MAX_VALUE);
@@ -389,6 +392,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMG10Q.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresAMG10Q.setTamano(tamano);
                     herramientasAuxiliaresAMG10Q.setNumeroCromosomasG(2);
+                    herramientasAuxiliaresAMG10Q.setNumeroCromosomasE(2);
                     herramientasAuxiliaresAMG10Q.setEvaluaciones(1);
                     herramientasAuxiliaresAMG10Q.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMG10Q.setProbabilidadMutacion(Float.MAX_VALUE);
@@ -443,6 +447,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMGA.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresAMGA.setTamano(tamano);
                     herramientasAuxiliaresAMGA.setNumeroCromosomasG(2);
+                    herramientasAuxiliaresAMGA.setNumeroCromosomasE(2);
                     herramientasAuxiliaresAMGA.setEvaluaciones(1);
                     herramientasAuxiliaresAMGA.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMGA.setProbabilidadMutacion(Float.MAX_VALUE);
@@ -497,6 +502,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMGAQ.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresAMGAQ.setTamano(tamano);
                     herramientasAuxiliaresAMGAQ.setNumeroCromosomasG(2);
+                    herramientasAuxiliaresAMGAQ.setNumeroCromosomasE(2);
                     herramientasAuxiliaresAMGAQ.setEvaluaciones(1);
                     herramientasAuxiliaresAMGAQ.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMGAQ.setProbabilidadMutacion(Float.MAX_VALUE);

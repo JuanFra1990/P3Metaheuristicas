@@ -129,7 +129,7 @@ public class AlgoritmoGeneticoEstacionario {
         costePoblacion.add(numeroCromosomas);
         for (int i=0; i < numeroCromosomas; i++){
             herramientasAux.cargarVector(poblacion.get(i));
-            costePoblacion.add(i,herramientasAux.costeTotal(poblacion.get(i)));
+            costePoblacion.add(i,herramientasAux.costeTotal(poblacion.get(i), null));
             if (i == 0){
                 posicionPrimeroMejor = i;
                 posicionPrimeroPeor = i;
@@ -180,16 +180,16 @@ public class AlgoritmoGeneticoEstacionario {
             hijoDos = cruce.hijoDos();
             
             funcionMutacion(hijoUno, hijoDos);
-            costeHUno = herramientasAux.costeTotal(hijoUno);
+            costeHUno = herramientasAux.costeTotal(hijoUno, null);
                         
-            costeHDos = herramientasAux.costeTotal(hijoDos);
+            costeHDos = herramientasAux.costeTotal(hijoDos, null);
             
             if(repite == 50){
                 BusquedaLocal b = new BusquedaLocal(herramientasAux, hijoUno);
 
-                costeHUno = b.algoritmoBusquedaLocalUno(ti);
+                costeHUno = b.algoritmoBusquedaLocalUno(ti, null);
                 hijoUno = b.getSolucionFinal();
-                costeHDos = b.algoritmoBusquedaLocalUno(ti);
+                costeHDos = b.algoritmoBusquedaLocalUno(ti, null);
                 hijoDos = b.getSolucionFinal();
                 repite = 0;
             }
