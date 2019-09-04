@@ -68,17 +68,22 @@ public class P3Metaheuristicas {
                    cargaDatos(fichero);
                    break;
                 case "2":
+                   InputStreamReader isr = new InputStreamReader(System.in);
+                   BufferedReader bf = new BufferedReader (isr);
+                   Integer semilla;
                    System.out.println("Has seleccionado la opción de seleccionar semillas");
                    System.out.println("¿Cuantas semillas desea introducir?");
-                   Reader entradaNumeroSemillas=new InputStreamReader(System.in);
-                   opcion=Character.toString((char)entradaNumeroSemillas.read());
-                   Integer tamanoSemilla = Integer.parseInt(opcion);
+                   
+                    String lineaTeclado = bf.readLine();
+                    semilla = Integer.parseInt(lineaTeclado);
+                   
+                   Integer tamanoSemilla = semilla;
                    Integer contador = 1;
                    while (tamanoSemilla > 0){
                         System.out.println("Introduzca la semilla numero " + contador);
-                        Reader entradaSemillas=new InputStreamReader(System.in);
-                        opcion=Character.toString((char)entradaSemillas.read());
-                        semillas.add(Integer.parseInt(opcion));
+                        String semillaNueva = bf.readLine();
+                        semilla = Integer.parseInt(semillaNueva);
+                        semillas.add(semilla);
                         tamanoSemilla--;
                         contador++;
                    }
