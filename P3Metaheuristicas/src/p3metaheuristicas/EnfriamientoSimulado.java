@@ -6,6 +6,7 @@
 package p3metaheuristicas;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 import p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo;
 
@@ -27,6 +28,14 @@ public class EnfriamientoSimulado {
         solucionActual = SolucionActual;
     }
     
+    /**
+     * @description Esta funcion devuelve el atributo solucionActual
+     * @return ArrayList devuelve la solucionActual de esta clase
+     */
+    public ArrayList<Integer> getSolucionActual(){
+        return solucionActual;
+    }
+    
      /**
      * @param SolucionESimulado ArrayList que contiene la solucion del enfriamiento simulado
      * @description Esta funcion nos permite modificar el valor de nuestro parametro SolucionESimulado.
@@ -34,6 +43,14 @@ public class EnfriamientoSimulado {
     
     public void setSolucionESimulado(ArrayList<Integer> SolucionESimulado){
         solucionESimulado = SolucionESimulado;
+    }
+    
+    /**
+     * @description Esta funcion devuelve el atributo solucionESimulado
+     * @return ArrayList devuelve la solucionESimulado de esta clase
+     */
+    public ArrayList<Integer> getSolucionESimulado(){
+        return solucionESimulado;
     }
     
      /**
@@ -44,27 +61,12 @@ public class EnfriamientoSimulado {
         herramientas = herramientasAux;
     }
     
-    /**
-     * 
-     * @param num Double al cual queremos calcularle el logaritmo
-     * @param base Int para saber en que base vamos a realizar el logaritmo al parametro num
-     * @description Funcion para realizar el logaritmo en base X a un numero 
-     */
-    private static Double log(double num, int base) {
-      return (Math.log10(num) / Math.log10(base));
-    }
-    
      /**
-     * @param array ArrayList de entrada y salida donde vamos a cambiar las posiciones
-     * @param origen Integer que indica la posicion del elemento origen
-     * @param destino Integer que indica la posicion del elemento destino
-     * @description Funcion de apoyo para la Búsqueda Local, que permite hacer intercambio de elementos de diferentes posiciones,
-     * dado el Array y su posicion origen y destino.
+     * @description Esta funcion devuelve el atributo herramientas
+     * @return HerramientasAuxiliares devuelve las herramientas de esta clase
      */
-    public static void intercambioPosiciones(ArrayList<Integer> array, Integer origen, Integer destino ){
-        Integer auxiliar = array.get(origen);
-        array.set(origen, array.get(destino));
-        array.set(destino, auxiliar);
+    public HerramientasAuxiliares getHerramientas(){
+        return herramientas;
     }
     
     /**
@@ -76,20 +78,22 @@ public class EnfriamientoSimulado {
      * de búsqueda por entornos con un criterio probabilístico 
      * de aceptación de soluciones basados en la Termodinámica
      */
-    public Integer EnfriamientoSimulado(boolean tipoTemperatura, algoritmo al){
-        Integer coste = herramientas.costeTotal(solucionActual, al);
-        Integer mejorCoste = coste;
+    public Integer EnfriamientoSimulado(boolean tipoTemperatura){
+        // Calculamos el coste inicial
         Integer tamanoSolActual = solucionActual.size();
         solucionESimulado = solucionActual;
+        
+        Integer coste = herramientas.costeTotal(solucionActual);
+        Integer mejorCoste = coste;
+        
         ArrayList<Integer> dlb = new ArrayList<>(tamanoSolActual);
         Integer contador = 0;
-        boolean mejora = true;
+        Boolean mejora = true;
         Double temperatura = 1.5*coste;
         Double temperaturaInicial = temperatura;
         Double temperaturaFinal = temperatura*0.05;
         Integer i = 0;
         Integer j = 0;
-        double rand = new Random().nextDouble();
         
         while (temperatura > temperaturaFinal && contador < 50000){
             mejora = false;
@@ -99,16 +103,16 @@ public class EnfriamientoSimulado {
                 j=0;
             }
             
-            for (i=0; i<tamanoSolActual && !mejora; i++){
+            for (i = 0; i < tamanoSolActual && !mejora; i++){
                 if (dlb.get(i) == 0){
                     boolean parada = false;
-                    for (j=0;j<tamanoSolActual && !mejora; j++){
-                        if(i!=j){
-                            Integer costeFactorial = herramientas.costeFactorial(solucionActual, i, j, coste, al);
+                    for (j = 0; j < tamanoSolActual && !mejora; j++){
+                        if(!Objects.equals(i, j)){
+                            Integer costeFactorial = herramientas.costeFactorial(solucionActual, i, j, coste);
                             Integer diferencia = costeFactorial - coste;
                             Double enfriamiento = (-diferencia/temperatura);
-                            if((diferencia<0) || (rand <= Math.exp(enfriamiento))){
-                                intercambioPosiciones(solucionActual,i,j);
+                            if(( diferencia < 0) || (new Random().nextDouble() <= Math.exp(enfriamiento))){
+                               intercambioPosiciones(solucionActual, i, j);
                                 coste = costeFactorial;
                                 dlb.set(i, 0);
                                 dlb.set(j, 0);
@@ -148,5 +152,28 @@ public class EnfriamientoSimulado {
             Palabra+=" "+auxiliar;
         }
         return Palabra;
+    }
+
+    /**
+       * 
+       * @param num Double al cual queremos calcularle el logaritmo
+       * @param base Int para saber en que base vamos a realizar el logaritmo al parametro num
+       * @description Funcion para realizar el logaritmo en base X a un numero 
+    */
+    private static Double log(double num, int base) {
+      return (Math.log10(num) / Math.log10(base));
     }    
+    
+      /**
+     * @param array ArrayList de entrada y salida donde vamos a cambiar las posiciones
+     * @param origen Integer que indica la posicion del elemento origen
+     * @param destino Integer que indica la posicion del elemento destino
+     * @description Funcion de apoyo para la Búsqueda Local, que permite hacer intercambio de elementos de diferentes posiciones,
+     * dado el Array y su posicion origen y destino.
+     */
+    public static void intercambioPosiciones(ArrayList<Integer> array, Integer origen, Integer destino ){
+        Integer auxiliar = array.get(origen);
+        array.set(origen, array.get(destino));
+        array.set(destino, auxiliar);
+    }
 }

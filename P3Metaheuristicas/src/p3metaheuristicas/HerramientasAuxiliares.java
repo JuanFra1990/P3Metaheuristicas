@@ -8,6 +8,7 @@ package p3metaheuristicas;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Random;
 import p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo;
 
 
@@ -15,19 +16,20 @@ public class HerramientasAuxiliares {
     private static ArrayList<ArrayList<Integer>> matrizFlujos;
     private static ArrayList<ArrayList<Integer>> matrizDistancias;
     Integer tamano;
+    String nombreDatos;
     Integer numeroCromosomasE;
     Integer numeroCromosomasG;
     Float probabilidadCruce;
     Float probabilidadMutacion;
-    Integer evaluaciones;
     Integer generaciones;
     
       /**
+     * @param _tamano nuevo valor de tamano
      * @description Esta función permite almacenar el valor del tamano.
      */
     
-    public void setTamano(Integer Ntamano) {
-        tamano = Ntamano;
+    public void setTamano(Integer _tamano) {
+        tamano = _tamano;
     }
     
     /**
@@ -126,20 +128,12 @@ public class HerramientasAuxiliares {
     }
     
           /**
-     * @param _evaluaciones valor que queremos dar a la variable evaluaciones
-     * @description Esta función permite cambiar el valor de la variable evaluaciones.
+     * @param _generaciones valor que queremos dar a la variable generaciones
+     * @description Esta función permite cambiar el valor de la variable generaciones.
      */
     
-    public void setEvaluaciones(Integer _evaluaciones) {
-        evaluaciones = _evaluaciones;
-    }
-    
-    /**
-     * @description Esta función nos da el valor de las evaluaciones
-     * @return evaluaciones un Integer que nos da un valor de las evaluaciones realizadas
-     */
-    public Integer getEvaluaciones(){
-        return evaluaciones;
+    public void setGeneraciones(Integer _generaciones) {
+        generaciones = _generaciones;
     }
     
     /**
@@ -181,17 +175,17 @@ public class HerramientasAuxiliares {
     
     /**
      * @param Solucion Array de Integer que contiene la solución
-     * @param al variable de control para conocer que algoritmo se esta usando y que tamaño debemos usar en el bucle
      * @description Esta función permite realizar el calculo del coste de creación de dicha solución.
      * @return coste devuelve un Integer con el coste de la solución
      */
     
-    public Integer costeTotal(ArrayList<Integer> Solucion, algoritmo al) {
+     public Integer costeTotal(ArrayList<Integer> Solucion) {
         int coste = 0;
         for (int i = 0; i < tamano; i++) {
             for (int j = 0; j < tamano; j++) {
-                if (i != j)
+                if (i != j) {
                     coste += matrizFlujos.get(i).get(j) * matrizDistancias.get(Solucion.get(i)).get(Solucion.get(j));
+                }
             }
         }
         return coste;
@@ -202,19 +196,12 @@ public class HerramientasAuxiliares {
      * @param posicionA Integer que contiene una posición de la matriz
      * @param posicionB Integer que contiene una posición de la matriz
      * @param coste Integer que almacena el coste de la solucion de nuestro problema
-     * @param al Variable para controlar el algoritmo en que nos encontramos y que tamaño utilizar en nuestro bucle
-     * @description Esta función recorre el contenido de las matrices de distancia y flujo y junto a la solución permite hallar el coste.
+      * @description Esta función recorre el contenido de las matrices de distancia y flujo y junto a la solución permite hallar el coste.
      * @return coste devuelve un Integer con el coste de la solución actual
      */
-    public Integer costeFactorial(ArrayList<Integer> Solucion, Integer posicionA, Integer posicionB, Integer coste, algoritmo al) {
-        Integer numeroCromosomas = 0;
-        if (al == null){
-            numeroCromosomas = numeroCromosomasE;
-        } else {
-            numeroCromosomas = numeroCromosomasG;
-        }
-        for (Integer i = 0; i < numeroCromosomas; i++) {
-            if (i != posicionA && i != posicionB) {
+    public Integer costeFactorial(ArrayList<Integer> Solucion, Integer posicionA, Integer posicionB, Integer coste) {
+        for (Integer i = 0; i < tamano; i++) {
+            if (!Objects.equals(i, posicionA) && !Objects.equals(i, posicionB)) {
                 coste += matrizFlujos.get(posicionA).get(i)*(matrizDistancias.get(Solucion.get(posicionB)).get(Solucion.get(i)) 
                         - matrizDistancias.get(Solucion.get(posicionA)).get(Solucion.get(i)) 
                         + matrizFlujos.get(posicionB).get(i)*(matrizDistancias.get(Solucion.get(posicionA)).get(Solucion.get(i)) 
@@ -233,14 +220,19 @@ public class HerramientasAuxiliares {
      * @description Esta función rellena de valores auxiliares dentro de un rango nuestro array.
      */
     public void cargarVector(ArrayList<Integer> array) {
+        array = new ArrayList<>(tamano);
+        
         for (Integer i = 0; i < tamano; i++) {
-            array.add(i);
+            array.set(i, i);
         }
-        Integer auxiliar;
+        Integer auxiliar, ran;
+        Random random = new Random();
         for (int i = tamano - 1; i > 0; i--) {
-            auxiliar = (0 + (i-(0) * (int)Math.random()));
+            ran = random.nextInt(i);
             //intercambio de elementos
-            Collections.swap(array,i,auxiliar);
+            auxiliar = array.get(i);
+            array.set(i, array.get(ran));
+            array.set(ran, auxiliar);
         }
     }
 }

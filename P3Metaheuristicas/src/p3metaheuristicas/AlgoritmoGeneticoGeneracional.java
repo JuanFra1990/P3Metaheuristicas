@@ -119,9 +119,9 @@ public class AlgoritmoGeneticoGeneracional {
         for (int i = 0; i < numeroCromosomas; i++) {
             herramientasAux.cargarVector(poblacion.get(i));
             if (costePoblacion.size()-1 > i) {
-                costePoblacion.set(i, herramientasAux.costeTotal(poblacion.get(i), al));
+                costePoblacion.set(i, herramientasAux.costeTotal(poblacion.get(i)));
             } else {
-                costePoblacion.add(herramientasAux.costeTotal(poblacion.get(i), al));
+                costePoblacion.add(herramientasAux.costeTotal(poblacion.get(i)));
             }
             if (i == 0) {
                 posicionPrimeroMejor = i;
@@ -136,9 +136,10 @@ public class AlgoritmoGeneticoGeneracional {
         Float probabilidadMutacion = herramientasAux.getProbabilidadMutacion() * tamano; 
         
         ArrayList<Float> costes = new ArrayList<>(numeroCromosomas); // donde se iran guardando los costes de los ganadores del los torneos
-        Cruce cruce = new Cruce(numeroCromosomas);
+        Cruce cruce = new Cruce();
+        cruce.setTamano(numeroCromosomas);
         Integer evaluaciones = 100;
-        Integer totalevaluaciones = herramientasAux.getEvaluaciones();
+        Integer totalevaluaciones = herramientasAux.getGeneraciones();
         Integer repeticiones = 0;
         
         while(evaluaciones<totalevaluaciones){
@@ -193,8 +194,8 @@ public class AlgoritmoGeneticoGeneracional {
                     }
                     flagsPadres.add(i, true);
                     flagsPadres.add(elemento, true);
-                    poblacionNueva.set(i, cruce.hijoUno());
-                    poblacionNueva.set(i, cruce.hijoDos());
+                    poblacionNueva.set(i, cruce.getHijoUno());
+                    poblacionNueva.set(i, cruce.getHijoDos());
                 }
             }
 
@@ -207,7 +208,7 @@ public class AlgoritmoGeneticoGeneracional {
                     if (i == posicionPrimeroMejor) {
                         elitismo = true;
                     }
-                    costes.set(i, (float)herramientasAux.costeTotal(poblacionNueva.get(i), al));
+                    costes.set(i, (float)herramientasAux.costeTotal(poblacionNueva.get(i)));
                     //evaluaciones++;if(evaluaciones==totalevaluaciones)break;
                 }
             }
@@ -227,10 +228,12 @@ public class AlgoritmoGeneticoGeneracional {
             if (repeticiones == 10) {
                 if (al.equals(AMG_ALL)) {
                     for (int i = 0; i < numeroCromosomas; i++) {
-                        BusquedaLocal busquedaLocal = new BusquedaLocal(herramientasAux,poblacionNueva.get(i));
+                        BusquedaLocal busquedaLocal = new BusquedaLocal();
+                        busquedaLocal.setHerramientas(herramientasAux);
+                        busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
 //                        busquedaLocal.setHerramientas(herramientasAux);
 //                        busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
-                        costes.set(i, (float)busquedaLocal.AlgoritmoBusquedaLocal(al));
+                        costes.set(i, (float)busquedaLocal.AlgoritmoBusquedaLocal());
                         poblacionNueva.set(i, busquedaLocal.getSolucionFinal());
                     }
                 }
@@ -239,10 +242,12 @@ public class AlgoritmoGeneticoGeneracional {
                         Random r = new Random();
                         float f =  (float) (r.nextFloat() * (1.0 - 0.0) + 0.0);
                         if (f < 0.1) {
-                            BusquedaLocal busquedaLocal = new BusquedaLocal(herramientasAux,poblacionNueva.get(i));
+                            BusquedaLocal busquedaLocal = new BusquedaLocal();
+                            busquedaLocal.setHerramientas(herramientasAux);
+                            busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
 //                            busquedaLocal.setHerramientas(herramientasAux);
 //                            busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
-                            costes.set(i,(float)busquedaLocal.AlgoritmoBusquedaLocal(al));
+                            costes.set(i,(float)busquedaLocal.AlgoritmoBusquedaLocal());
                             poblacionNueva.set(i, busquedaLocal.getSolucionFinal());
                         }
                     }
@@ -252,10 +257,12 @@ public class AlgoritmoGeneticoGeneracional {
                         Random r = new Random();
                         float f =  (float) (r.nextFloat() * (1.0 - 0.0) + 0.0);
                         if (f < 0.1) {
-                            BusquedaLocal busquedaLocal = new BusquedaLocal(herramientasAux,poblacionNueva.get(i));
+                            BusquedaLocal busquedaLocal = new BusquedaLocal();
+                            busquedaLocal.setHerramientas(herramientasAux);
+                            busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
 //                            busquedaLocal.setHerramientas(herramientasAux);
 //                            busquedaLocal.setSolucionAnterior(poblacionNueva.get(i));
-                            costes.set(i,(float)busquedaLocal.AlgoritmoBusquedaLocal(al));
+                            costes.set(i,(float)busquedaLocal.AlgoritmoBusquedaLocal());
                             poblacionNueva.set(i, busquedaLocal.getSolucionFinal());
                         }
                     }

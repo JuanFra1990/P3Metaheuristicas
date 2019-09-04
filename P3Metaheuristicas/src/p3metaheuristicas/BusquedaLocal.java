@@ -21,29 +21,32 @@ public class BusquedaLocal {
     private ArrayList<Integer> solucionAnterior;
     private ArrayList<Integer> solucionFinal;
     
-    BusquedaLocal(HerramientasAuxiliares h, ArrayList<Integer> array){
-        herramientas = h;
-        solucionAnterior = array;
-        solucionFinal = array;
-    }
     /**
-     * @param SolucionAnterior ArrayList que contiene la solucion anterior
+     * @param _solucionAnterior ArrayList que contiene la solucion anterior
      * @description Esta funcion nos permite modificar el valor de nuestro parametro solucionAnterior.
      */
-    public void setSolucionAnterior(ArrayList<Integer> SolucionAnterior){
-        solucionAnterior = SolucionAnterior;
+    public void setSolucionAnterior(ArrayList<Integer> _solucionAnterior){
+        solucionAnterior = _solucionAnterior;
     }
     
     /**
-     * @param SolucionFinal ArrayList que contiene la ultima solucion
+     * @return ArrayList con la solucion anterior del algoritmo
+     * @description Esta funcion nos permite obtener la solucionAnterior.
+     */
+    public ArrayList<Integer> getSolucionAnterior(){
+        return solucionAnterior;
+    }
+    
+    /**
+     * @param _solucionFinal ArrayList que contiene la ultima solucion
      * @description Esta funcion nos permite modificar el valor de nuestro parametro solucionFinal.
      */
-    public void setSolucionFinal(ArrayList<Integer> SolucionFinal){
-        solucionFinal = SolucionFinal;
+    public void setSolucionFinal(ArrayList<Integer> _solucionFinal){
+        solucionFinal = _solucionFinal;
     }
     
     /**
-     * @return ArrayList<Integer> con la solucion final del algoritmo
+     * @return ArrayList con la solucion final del algoritmo
      * @description Esta funcion nos permite obtener la solucionFinal.
      */
     public ArrayList<Integer> getSolucionFinal(){
@@ -74,19 +77,22 @@ public class BusquedaLocal {
     }
     
      /**
+     * @return Integer con el valor del coste del algoritmo de busqueda local
      * @description En esta funcion el objetivo es obtener la solución greedy mediante nuestros parametros de entrada, calculados previamente
      * y con distintas variables apoyo como son vectorIndice1, vectorIndice2, posicion, flujoMaximo y distanciaMaxima, el calculo consiste en
      * recorrer cada Array y comparar tanto la distancia minima como el flujo maximo, de superar los umbrales marcados se actualiza el valor y
      * la posicion del Array y se almacena en nuestros vectoresIndice, que más tarde la unión de estos saldra nuestro vectorSolucion.
      */
-    public Integer AlgoritmoBusquedaLocal(algoritmo al){
-        
-         Integer coste = herramientas.costeTotal(solucionAnterior, al);
+    public Integer AlgoritmoBusquedaLocal(){
+        //Calculamos el coste inicial
+        Integer coste = herramientas.costeTotal(solucionAnterior);
         Integer tamanoSolAnterior = solucionAnterior.size();
         ArrayList<Integer> dlb = new ArrayList<>(tamanoSolAnterior);
+        
         for (int i = 0; i<tamanoSolAnterior; i++){
             dlb.add(0);
         }
+        
         Integer contador = 0;
         boolean mejora = true;
         boolean parada = false;
@@ -99,11 +105,10 @@ public class BusquedaLocal {
                 if (dlb.get(i) == 0) {
                     parada = false;
                     for (int j = 0; j < tamanoSolAnterior && !mejora; j++) {
-                        Integer CosteFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste, al);
+                        Integer CosteFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste);
                         if (CosteFactorial < coste) {
                             coste = CosteFactorial;
-                            // Usamos Swap si vemos que no funciona bien deberiamos usar la funcion Intercambia posiciones de arriba
-                            Collections.swap(solucionAnterior,i,j);
+                            intercambioPosiciones(solucionAnterior, i, j);
                             dlb.set(i, 0);
                             dlb.set(j, 0);
                             parada = true;
@@ -121,9 +126,10 @@ public class BusquedaLocal {
     }
     
     
-    public Integer algoritmoBusquedaLocalUno(tipoDato a, algoritmo al){
+    public Integer algoritmoBusquedaLocalUno(tipoDato a){
+        //Calculamos el coste inicial
         Integer tamanoSolAnterior = solucionAnterior.size();
-        Integer coste = herramientas.costeTotal(solucionAnterior, al);
+        Integer coste = herramientas.costeTotal(solucionAnterior);
         ArrayList<Integer> dlb = new ArrayList<Integer> (tamanoSolAnterior);
         Integer contador = 0;
         boolean mejora = true;
@@ -144,7 +150,7 @@ public class BusquedaLocal {
                 if(dlb.get(i) == 0){
                     parada = false;
                     for(int j=0; j<tamanoSolAnterior && !mejora; j++){
-                        Integer costeFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste, al);
+                        Integer costeFactorial = herramientas.costeFactorial(solucionAnterior, i, j, coste);
                         if(costeFactorial < coste){
                             coste = costeFactorial;
                             intercambioPosiciones(solucionAnterior, i, j);

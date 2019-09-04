@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class AlgoritmoGreedy {
     private Integer tamano;
-    ArrayList<Integer> finalUno;
-    ArrayList<Integer> finalDos;
-    HerramientasAuxiliares herramientasAux;
-    public ArrayList<Integer> arraySolucion;
+    private ArrayList<Integer> finalUno;
+    private ArrayList<Integer> finalDos;
+    private HerramientasAuxiliares herramientasAux;
+    private ArrayList<Integer> arraySolucion;
     
     /**
      * @description Función para obtener nuestro primer array final
@@ -28,6 +28,22 @@ public class AlgoritmoGreedy {
      */
     public ArrayList<Integer> getFinalDos(){
         return finalDos;
+    }
+    
+     /**
+     * @description Función para editar el valor del arraySolucion
+     * @param _arraySolucion nuevo valor de nuestro ArrayList
+     */
+    public void setArraySolucion(ArrayList<Integer> _arraySolucion){
+        arraySolucion = _arraySolucion;
+    }
+    
+    /**
+     * @description Función para obtener nuestro arraySolucion
+     * @return ArrayList que nos devuelve el arraySolucion
+     */
+    public ArrayList<Integer> getArraySolucion(){
+        return arraySolucion;
     }
     
     /**
@@ -99,27 +115,27 @@ public class AlgoritmoGreedy {
                 }
             }
             flujoMaximo = -5;
-            finalUno.set(-5, finalUno.get(posicion));
+            finalUno.set(posicion, -5);
             arrayIndicesUno.add(posicion);
         }
         
         //Creamos el array de indices de menor a mayor por posicion -> distancia
         for(int j=0; j<tamano; j++){
             for(int i=0; i<tamano; i++){
-                if(distanciaMinima < finalDos.get(i)){
+                if(distanciaMinima > finalDos.get(i)){
                     distanciaMinima = finalDos.get(i);
                     posicion=i;
                 }
             }
             distanciaMinima = 1000000;
-            finalDos.set(1000000, finalDos.get(posicion));
+            finalDos.set(posicion, 10000000);
             arrayIndicesDos.add(posicion);
         }
         
         
         //Creamos array solucion -> mayor flujo con menor distancia
         for(int i=0; i<tamano; i++){
-            arraySolucionGreedy.set(arrayIndicesDos.get(i), arrayIndicesUno.get(i));
+            arraySolucionGreedy.set(arrayIndicesUno.get(i), arrayIndicesDos.get(i));
         }
         
         arraySolucion = arraySolucionGreedy;

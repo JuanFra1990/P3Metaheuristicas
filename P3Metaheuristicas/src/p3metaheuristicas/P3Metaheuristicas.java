@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import p3metaheuristicas.AlgoritmoGeneticoGeneracional.algoritmo;
 
 import p3metaheuristicas.BusquedaLocal.tipoDato;
@@ -61,8 +63,9 @@ public class P3Metaheuristicas {
            System.out.println("Opcion elegida: "+ opcion);
             switch (opcion){
                 case "1":
-                   System.out.println("Has seleccionado la opción de cargar datos");
-                   cargaDatos("./archivos/cnf02.dat");
+                   String fichero = seleccionFichero();
+                   System.out.println("Has seleccionado el fichero " + fichero);
+                   cargaDatos(fichero);
                    break;
                 case "2":
                    System.out.println("Has seleccionado la opción de seleccionar semillas");
@@ -124,7 +127,8 @@ public class P3Metaheuristicas {
                     herramientasAuxiliares.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliares.setTamano(tamano);
                     herramientasAuxiliares.setNumeroCromosomasE(2);
-                    herramientasAuxiliares.setEvaluaciones(0);
+                    herramientasAuxiliares.setNumeroCromosomasG(2);
+                    herramientasAuxiliares.setGeneraciones(0);
                     algoritmoEstacionario.setHerramientasAuxiliares(herramientasAuxiliares);
                     algoritmoEstacionario.evolucion(true, tipoDato.CIEN);
                     algoritmoEstacionario.mostrarSolucion();
@@ -176,7 +180,9 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresE.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresE.setTamano(tamano);
                     herramientasAuxiliaresE.setNumeroCromosomasE(2);
-                    herramientasAuxiliaresE.setEvaluaciones(0);
+                    herramientasAuxiliaresE.setNumeroCromosomasG(2);
+                    
+                    herramientasAuxiliaresE.setGeneraciones(0);
                     algoritmoEstacionarioE.setHerramientasAuxiliares(herramientasAuxiliaresE);
                     algoritmoEstacionarioE.evolucion(true, tipoDato.QUINIENTOS);
                     algoritmoEstacionarioE.mostrarSolucion();
@@ -229,7 +235,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMG3.setTamano(tamano);
                     herramientasAuxiliaresAMG3.setNumeroCromosomasG(2);
                     herramientasAuxiliaresAMG3.setNumeroCromosomasE(2);
-                    herramientasAuxiliaresAMG3.setEvaluaciones(1);
+                    herramientasAuxiliaresAMG3.setGeneraciones(1);
                     herramientasAuxiliaresAMG3.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMG3.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracional.setHerramientasAuxiliares(herramientasAuxiliaresAMG3);
@@ -284,7 +290,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMG3Q.setTamano(tamano);
                     herramientasAuxiliaresAMG3Q.setNumeroCromosomasG(2);
                     herramientasAuxiliaresAMG3Q.setNumeroCromosomasE(2);
-                    herramientasAuxiliaresAMG3Q.setEvaluaciones(1);
+                    herramientasAuxiliaresAMG3Q.setGeneraciones(1);
                     herramientasAuxiliaresAMG3Q.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMG3Q.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracionalAMG3.setHerramientasAuxiliares(herramientasAuxiliaresAMG3Q);
@@ -338,7 +344,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMG10.setMatrizFlujos(matrizFlujos);
                     herramientasAuxiliaresAMG10.setTamano(tamano);
                     herramientasAuxiliaresAMG10.setNumeroCromosomasG(2);
-                    herramientasAuxiliaresAMG10.setEvaluaciones(1);
+                    herramientasAuxiliaresAMG10.setGeneraciones(1);
                     herramientasAuxiliaresAMG10.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMG10.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracionalAMG10.setHerramientasAuxiliares(herramientasAuxiliaresAMG10);
@@ -393,7 +399,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMG10Q.setTamano(tamano);
                     herramientasAuxiliaresAMG10Q.setNumeroCromosomasG(2);
                     herramientasAuxiliaresAMG10Q.setNumeroCromosomasE(2);
-                    herramientasAuxiliaresAMG10Q.setEvaluaciones(1);
+                    herramientasAuxiliaresAMG10Q.setGeneraciones(1);
                     herramientasAuxiliaresAMG10Q.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMG10Q.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracionalAMG10Q.setHerramientasAuxiliares(herramientasAuxiliaresAMG10Q);
@@ -448,7 +454,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMGA.setTamano(tamano);
                     herramientasAuxiliaresAMGA.setNumeroCromosomasG(2);
                     herramientasAuxiliaresAMGA.setNumeroCromosomasE(2);
-                    herramientasAuxiliaresAMGA.setEvaluaciones(1);
+                    herramientasAuxiliaresAMGA.setGeneraciones(1);
                     herramientasAuxiliaresAMGA.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMGA.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracionalAMGA.setHerramientasAuxiliares(herramientasAuxiliaresAMGA);
@@ -503,7 +509,7 @@ public class P3Metaheuristicas {
                     herramientasAuxiliaresAMGAQ.setTamano(tamano);
                     herramientasAuxiliaresAMGAQ.setNumeroCromosomasG(2);
                     herramientasAuxiliaresAMGAQ.setNumeroCromosomasE(2);
-                    herramientasAuxiliaresAMGAQ.setEvaluaciones(1);
+                    herramientasAuxiliaresAMGAQ.setGeneraciones(1);
                     herramientasAuxiliaresAMGAQ.setProbabilidadCruce(Float.MAX_VALUE);
                     herramientasAuxiliaresAMGAQ.setProbabilidadMutacion(Float.MAX_VALUE);
                     algoritmoGeneracionalAMGAQ.setHerramientasAuxiliares(herramientasAuxiliaresAMGAQ);
@@ -578,5 +584,33 @@ public class P3Metaheuristicas {
         System.out.println("El tamaño de la matriz de flujos es: " + tamFlujos);
         System.out.println("El tamaño de la matriz de distancias es: " + tamDistancias);
     }
+     
+     public static String seleccionFichero(){
+        System.out.println("¿Que fichero desea seleccionar? (Seleccione un numero del 1 - 10)");
+        String ruta = "";
+        int opcion = -1;
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader bf = new BufferedReader (isr);
+        try {
+             while (opcion < 0 || opcion >10){
+                String lineaTeclado = bf.readLine();
+                opcion = Integer.parseInt(lineaTeclado);
+                System.out.println(opcion);
+                if (opcion > 0 && opcion < 4 || opcion > 5 && opcion < 10){
+                   ruta = "./archivos/cnf0" + opcion + ".dat";
+                } else if (opcion >= 4 && opcion <= 5){
+                   ruta = "./archivos/cnf0" + opcion + "dat.sec";
+                } else if(opcion == 10){
+                     ruta = "./archivos/cnf" + opcion + ".dat";
+                } else {
+                    ruta = "No es posible leer esta opcion, seleccione un numero valido";
+                }
+             }   
+         } catch (IOException ex) {
+             Logger.getLogger(P3Metaheuristicas.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        return ruta;
+    }
+    
 }
 
